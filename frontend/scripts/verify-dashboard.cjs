@@ -48,8 +48,8 @@ const { chromium } = require(process.env.PLAYWRIGHT_CORE_PATH || 'C:/Users/Vansh
     assert.equal(styling.rightGap, 12)
     assert.ok(styling.paddings.every(padding => padding === '16px'))
     assert.equal(styling.panelBackground, styling.attributionBackground)
-    assert.equal(styling.selectedBackground, 'rgb(29, 78, 216)')
-    assert.equal(styling.panelBackground, 'rgba(255, 255, 255, 0.94)')
+    assert.equal(styling.selectedBackground, 'rgb(212, 175, 55)')
+    assert.equal(styling.panelBackground, 'rgba(12, 14, 26, 0.94)')
     const contrast = await page.evaluate(() => {
       const luminance = color => {
         const channels = color.match(/[\d.]+/g).slice(0, 3).map(Number).map(value => value / 255).map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4)
@@ -59,9 +59,10 @@ const { chromium } = require(process.env.PLAYWRIGHT_CORE_PATH || 'C:/Users/Vansh
       const selected = getComputedStyle(document.querySelector('button[aria-pressed="true"]'))
       const caption = getComputedStyle(document.querySelector('.hud-label'))
       const value = getComputedStyle(document.querySelector('[aria-label="Rainfall readout"] p'))
-      return { selected: ratio(luminance(selected.color), luminance(selected.backgroundColor)), caption: ratio(luminance(caption.color), 1), value: ratio(luminance(value.color), 1) }
+      const panelBackground = luminance(getComputedStyle(document.querySelector('.hud-panel')).backgroundColor)
+      return { selected: ratio(luminance(selected.color), luminance(selected.backgroundColor)), caption: ratio(luminance(caption.color), panelBackground), value: ratio(luminance(value.color), panelBackground) }
     })
-    console.log('LIGHT TEXT CONTRAST', contrast)
+    console.log('DARK TEXT CONTRAST', contrast)
     assert.ok(Object.values(contrast).every(ratio => ratio >= 4.5))
     assert.equal(await page.getByRole('complementary', { name: 'Flood depth legend' }).count(), 1)
     const before = await page.evaluate(async () => {

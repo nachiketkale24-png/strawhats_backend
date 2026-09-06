@@ -2,9 +2,8 @@ import { useEffect } from 'react'
 import type { Dispatch, MutableRefObject, RefObject, SetStateAction } from 'react'
 import * as maplibregl from 'maplibre-gl'
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
-import { mockFlood } from '../data/mockFlood'
 import { MUMBAI_BOUNDS } from '../config/mumbai'
-import { addFloodLayers } from '../lib/floodLayers'
+import { addEventLayers } from '../lib/eventLayers'
 
 // MapLibre 6 needs an explicit bundled worker URL when used with Vite.
 maplibregl.setWorkerUrl(workerUrl)
@@ -21,7 +20,7 @@ export function useMumbaiMap(
     try {
       map = new maplibregl.Map({
         container: containerRef.current,
-        style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+        style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
         center: [72.8777, 19.076], zoom: 11, minZoom: 10,
         maxBounds: MUMBAI_BOUNDS,
         maxPitch: 60,
@@ -51,7 +50,8 @@ export function useMumbaiMap(
         'source-layer': 'building', minzoom: 13,
         layout: { visibility: 'none' },
         paint: {
-          'fill-extrusion-color': getComputedStyle(document.documentElement).getPropertyValue('--building-fill').trim(),
+          'fill-extrusion-color': ['interpolate', ['linear'], ['coalesce', ['get', 'render_height'], 0],
+            0, '#1a1a2e', 20, '#16213e', 50, '#0f3460', 120, '#533483', 300, '#e94560'],
           'fill-extrusion-height': ['interpolate', ['linear'], ['zoom'], 13, 0, 15, ['coalesce', ['get', 'render_height'], 0]],
           'fill-extrusion-base': ['interpolate', ['linear'], ['zoom'], 13, 0, 15, ['coalesce', ['get', 'render_min_height'], 0]],
           'fill-extrusion-opacity': 1,
@@ -59,10 +59,7 @@ export function useMumbaiMap(
         },
       })
 
-      addFloodLayers(map, mockFlood)
-      // Use our own known layer, not a CARTO style-specific label ID. Heat must
-      // stay beneath the buildings; inspection/route overlays remain above.
-      if (map.getLayer('flood-hotspots')) map.moveLayer('mumbai-buildings-3d', 'flood-hotspots')
+      addEventLayers(map)
       setError(null)
       setReady(true)
     }

@@ -1,0 +1,7 @@
+data/processed/
+__pycache__/
+*.pyc
+.venv/
+data/processed/**/*.tif
+data/processed/**/*.gpickle
+data/processed/**/*.gpkg

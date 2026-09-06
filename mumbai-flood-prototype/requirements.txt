@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic
+numpy
+pandas
+scipy
+rasterio
+geopandas
+momepy
+networkx
+rasterstats
+shapely
+openpyxl
