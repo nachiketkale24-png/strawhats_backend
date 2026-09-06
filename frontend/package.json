@@ -1,0 +1,28 @@
+{
+  "name": "flood-nowcast-mumbai",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.5.5",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.2"
+  },
+  "dependencies": {
+    "framer-motion": "^13.2.0",
+    "lucide-react": "^1.41.0",
+    "maplibre-gl": "^6.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

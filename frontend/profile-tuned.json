@@ -1,0 +1,531 @@
+{
+  "generationCount": 1,
+  "layerIds": [
+    "background",
+    "landcover",
+    "park_national_park",
+    "park_nature_reserve",
+    "landuse_residential",
+    "landuse",
+    "waterway",
+    "boundary_county",
+    "boundary_state",
+    "water",
+    "water_shadow",
+    "aeroway-runway",
+    "aeroway-taxiway",
+    "waterway_label",
+    "tunnel_service_case",
+    "tunnel_minor_case",
+    "tunnel_sec_case",
+    "tunnel_pri_case",
+    "tunnel_trunk_case",
+    "tunnel_mot_case",
+    "tunnel_path",
+    "tunnel_service_fill",
+    "tunnel_minor_fill",
+    "tunnel_sec_fill",
+    "tunnel_pri_fill",
+    "tunnel_trunk_fill",
+    "tunnel_mot_fill",
+    "tunnel_rail",
+    "tunnel_rail_dash",
+    "road_service_case",
+    "road_minor_case",
+    "road_pri_case_ramp",
+    "road_trunk_case_ramp",
+    "road_mot_case_ramp",
+    "road_sec_case_noramp",
+    "road_pri_case_noramp",
+    "road_trunk_case_noramp",
+    "road_mot_case_noramp",
+    "road_path",
+    "road_service_fill",
+    "road_minor_fill",
+    "road_pri_fill_ramp",
+    "road_trunk_fill_ramp",
+    "road_mot_fill_ramp",
+    "road_sec_fill_noramp",
+    "road_pri_fill_noramp",
+    "road_trunk_fill_noramp",
+    "road_mot_fill_noramp",
+    "rail",
+    "rail_dash",
+    "bridge_service_case",
+    "bridge_minor_case",
+    "bridge_sec_case",
+    "bridge_pri_case",
+    "bridge_trunk_case",
+    "bridge_mot_case",
+    "bridge_path",
+    "bridge_service_fill",
+    "bridge_minor_fill",
+    "bridge_sec_fill",
+    "bridge_pri_fill",
+    "bridge_trunk_fill",
+    "bridge_mot_fill",
+    "building",
+    "building-top",
+    "boundary_country_outline",
+    "boundary_country_inner",
+    "watername_ocean",
+    "watername_sea",
+    "watername_lake",
+    "watername_lake_line",
+    "place_hamlet",
+    "place_suburbs",
+    "place_villages",
+    "place_town",
+    "place_country_2",
+    "place_country_1",
+    "place_state",
+    "place_continent",
+    "place_city_r6",
+    "place_city_r5",
+    "place_city_dot_r7",
+    "place_city_dot_r4",
+    "place_city_dot_r2",
+    "place_city_dot_z7",
+    "place_capital_dot_z7",
+    "poi_stadium",
+    "poi_park",
+    "roadname_minor",
+    "roadname_sec",
+    "roadname_pri",
+    "roadname_major",
+    "housenumber",
+    "satellite-imagery",
+    "flood-heatmap",
+    "mumbai-buildings-3d",
+    "flood-hotspots",
+    "flood-hotspot-hit",
+    "roads-flood",
+    "drainage-edges",
+    "drainage-arrows",
+    "drainage-nodes",
+    "route-line",
+    "route-points",
+    "route-labels"
+  ],
+  "eligibleLayers": [
+    {
+      "id": "background",
+      "type": "background"
+    },
+    {
+      "id": "landcover",
+      "type": "fill"
+    },
+    {
+      "id": "park_national_park",
+      "type": "fill"
+    },
+    {
+      "id": "park_nature_reserve",
+      "type": "fill"
+    },
+    {
+      "id": "landuse_residential",
+      "type": "fill"
+    },
+    {
+      "id": "landuse",
+      "type": "fill"
+    },
+    {
+      "id": "waterway",
+      "type": "line"
+    },
+    {
+      "id": "boundary_county",
+      "type": "line"
+    },
+    {
+      "id": "boundary_state",
+      "type": "line"
+    },
+    {
+      "id": "water",
+      "type": "fill"
+    },
+    {
+      "id": "water_shadow",
+      "type": "fill"
+    },
+    {
+      "id": "aeroway-runway",
+      "type": "line"
+    },
+    {
+      "id": "aeroway-taxiway",
+      "type": "line"
+    },
+    {
+      "id": "waterway_label",
+      "type": "symbol"
+    },
+    {
+      "id": "tunnel_minor_case",
+      "type": "line"
+    },
+    {
+      "id": "tunnel_sec_case",
+      "type": "line"
+    },
+    {
+      "id": "tunnel_pri_case",
+      "type": "line"
+    },
+    {
+      "id": "tunnel_trunk_case",
+      "type": "line"
+    },
+    {
+      "id": "tunnel_mot_case",
+      "type": "line"
+    },
+    {
+      "id": "tunnel_sec_fill",
+      "type": "line"
+    },
+    {
+      "id": "tunnel_pri_fill",
+      "type": "line"
+    },
+    {
+      "id": "tunnel_trunk_fill",
+      "type": "line"
+    },
+    {
+      "id": "tunnel_mot_fill",
+      "type": "line"
+    },
+    {
+      "id": "tunnel_rail",
+      "type": "line"
+    },
+    {
+      "id": "road_minor_case",
+      "type": "line"
+    },
+    {
+      "id": "road_pri_case_ramp",
+      "type": "line"
+    },
+    {
+      "id": "road_trunk_case_ramp",
+      "type": "line"
+    },
+    {
+      "id": "road_mot_case_ramp",
+      "type": "line"
+    },
+    {
+      "id": "road_sec_case_noramp",
+      "type": "line"
+    },
+    {
+      "id": "road_pri_case_noramp",
+      "type": "line"
+    },
+    {
+      "id": "road_trunk_case_noramp",
+      "type": "line"
+    },
+    {
+      "id": "road_mot_case_noramp",
+      "type": "line"
+    },
+    {
+      "id": "road_pri_fill_ramp",
+      "type": "line"
+    },
+    {
+      "id": "road_trunk_fill_ramp",
+      "type": "line"
+    },
+    {
+      "id": "road_mot_fill_ramp",
+      "type": "line"
+    },
+    {
+      "id": "road_sec_fill_noramp",
+      "type": "line"
+    },
+    {
+      "id": "road_pri_fill_noramp",
+      "type": "line"
+    },
+    {
+      "id": "road_trunk_fill_noramp",
+      "type": "line"
+    },
+    {
+      "id": "road_mot_fill_noramp",
+      "type": "line"
+    },
+    {
+      "id": "rail",
+      "type": "line"
+    },
+    {
+      "id": "bridge_minor_case",
+      "type": "line"
+    },
+    {
+      "id": "bridge_sec_case",
+      "type": "line"
+    },
+    {
+      "id": "bridge_pri_case",
+      "type": "line"
+    },
+    {
+      "id": "bridge_trunk_case",
+      "type": "line"
+    },
+    {
+      "id": "bridge_mot_case",
+      "type": "line"
+    },
+    {
+      "id": "bridge_sec_fill",
+      "type": "line"
+    },
+    {
+      "id": "bridge_pri_fill",
+      "type": "line"
+    },
+    {
+      "id": "bridge_trunk_fill",
+      "type": "line"
+    },
+    {
+      "id": "bridge_mot_fill",
+      "type": "line"
+    },
+    {
+      "id": "building",
+      "type": "fill"
+    },
+    {
+      "id": "building-top",
+      "type": "fill"
+    },
+    {
+      "id": "boundary_country_outline",
+      "type": "line"
+    },
+    {
+      "id": "boundary_country_inner",
+      "type": "line"
+    },
+    {
+      "id": "watername_sea",
+      "type": "symbol"
+    },
+    {
+      "id": "watername_lake",
+      "type": "symbol"
+    },
+    {
+      "id": "watername_lake_line",
+      "type": "symbol"
+    },
+    {
+      "id": "place_hamlet",
+      "type": "symbol"
+    },
+    {
+      "id": "place_suburbs",
+      "type": "symbol"
+    },
+    {
+      "id": "place_villages",
+      "type": "symbol"
+    },
+    {
+      "id": "place_city_r6",
+      "type": "symbol"
+    },
+    {
+      "id": "place_city_r5",
+      "type": "symbol"
+    },
+    {
+      "id": "roadname_pri",
+      "type": "symbol"
+    },
+    {
+      "id": "roadname_major",
+      "type": "symbol"
+    },
+    {
+      "id": "mumbai-buildings-3d",
+      "type": "fill-extrusion"
+    },
+    {
+      "id": "flood-hotspots",
+      "type": "circle"
+    },
+    {
+      "id": "flood-hotspot-hit",
+      "type": "circle"
+    },
+    {
+      "id": "roads-flood",
+      "type": "line"
+    },
+    {
+      "id": "drainage-edges",
+      "type": "line"
+    },
+    {
+      "id": "drainage-arrows",
+      "type": "symbol"
+    },
+    {
+      "id": "drainage-nodes",
+      "type": "circle"
+    },
+    {
+      "id": "route-line",
+      "type": "line"
+    },
+    {
+      "id": "route-points",
+      "type": "circle"
+    },
+    {
+      "id": "route-labels",
+      "type": "symbol"
+    }
+  ],
+  "buildingFeatures": 205,
+  "buildingPaint": {
+    "fill-extrusion-color": "#667c8e",
+    "fill-extrusion-height": [
+      "interpolate",
+      [
+        "linear"
+      ],
+      [
+        "zoom"
+      ],
+      13,
+      0,
+      15,
+      [
+        "coalesce",
+        [
+          "get",
+          "render_height"
+        ],
+        0
+      ]
+    ],
+    "fill-extrusion-base": [
+      "interpolate",
+      [
+        "linear"
+      ],
+      [
+        "zoom"
+      ],
+      13,
+      0,
+      15,
+      [
+        "coalesce",
+        [
+          "get",
+          "render_min_height"
+        ],
+        0
+      ]
+    ],
+    "fill-extrusion-opacity": 1,
+    "fill-extrusion-vertical-gradient": true
+  },
+  "heatmapPaint": {
+    "heatmap-weight": [
+      "interpolate",
+      [
+        "linear"
+      ],
+      [
+        "get",
+        "depthCm"
+      ],
+      0,
+      0,
+      5,
+      0.12,
+      15,
+      0.4,
+      30,
+      0.8,
+      60,
+      1
+    ],
+    "heatmap-intensity": 0.6,
+    "heatmap-radius": 70,
+    "heatmap-color": [
+      "interpolate",
+      [
+        "linear"
+      ],
+      [
+        "heatmap-density"
+      ],
+      0,
+      "rgba(255,240,179,0)",
+      0.15,
+      "#fff0b3",
+      0.4,
+      "#f9c74f",
+      0.65,
+      "#f98432",
+      1,
+      "#aa1d22"
+    ],
+    "heatmap-opacity": [
+      "interpolate",
+      [
+        "linear"
+      ],
+      [
+        "zoom"
+      ],
+      10,
+      0.72,
+      13,
+      0.72,
+      14,
+      0
+    ]
+  },
+  "arrowRotation": [
+    "get",
+    "bearing"
+  ],
+  "withHeatmap": {
+    "medianMs": 13.900000000001455,
+    "p95Ms": 22,
+    "maxMs": 41.5,
+    "over50ms": 0,
+    "count": 322
+  },
+  "withoutHeatmap": {
+    "medianMs": 13.80000000000291,
+    "p95Ms": 20.900000000001455,
+    "maxMs": 27.799999999995634,
+    "over50ms": 0,
+    "count": 362
+  },
+  "afterMotion": {
+    "generationCount": 1,
+    "setDataCalls": 0
+  },
+  "errors": []
+}
