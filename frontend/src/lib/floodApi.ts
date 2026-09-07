@@ -39,3 +39,21 @@ export async function getRoutes(event: string, start: RoutePoint, end: RoutePoin
     event_date: event, origin_lat: start.lat, origin_lon: start.lng, dest_lat: end.lat, dest_lon: end.lng, window_minutes: minutes,
   })).json()
 }
+
+export interface GeocodeResult { lat: number; lng: number; displayName: string }
+export async function geocodeAddress(address: string, signal: AbortSignal): Promise<GeocodeResult | null> {
+  // If the user typed or pasted raw coordinates (e.g. "19.1501, 72.8564"), parse them directly
+  const coordsMatch = address.match(/^\s*(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\s*$/)
+  if (coordsMatch) {
+    return { lat: parseFloat(coordsMatch[1]), lng: parseFloat(coordsMatch[3]), displayName: address }
+  }
+
+  const query = encodeURIComponent(address + (address.toLowerCase().includes('mumbai') ? '' : ', Mumbai'))
+  const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`
+  // Add a unique user-agent or identifier in the headers/params if possible, but standard fetch works.
+  const response = await fetch(url, { signal, headers: { 'Accept-Language': 'en-US,en;q=0.9' } })
+  if (!response.ok) throw new Error('Geocoding service unavailable.')
+  const data = await response.json()
+  if (!data || data.length === 0) return null
+  return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), displayName: data[0].display_name }
+}

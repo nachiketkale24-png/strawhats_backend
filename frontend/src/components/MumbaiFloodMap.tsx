@@ -5,6 +5,7 @@ import { Box, Layers, Satellite } from 'lucide-react'
 import MapControls from './MapControls'
 import { useMumbaiMap } from '../hooks/useMumbaiMap'
 import Panel, { PanelCaption, PanelLabel } from './ui/Panel'
+import AddressRoutePanel from './AddressRoutePanel'
 import { API_BASE, apiRequest, getEvents, getRoutes, getSummary, getWindows, windowQuery } from '../lib/floodApi'
 import type { EventSummary, RouteComparison, EventWindows } from '../lib/floodApi'
 import { clearCoverageOverlay, clearEventRaster, FSI_COLORS, loadCoverageOverlay, loadEventRaster, updateEventRoutes } from '../lib/eventLayers'
@@ -109,10 +110,10 @@ export default function MumbaiFloodMap() {
     if (!ready || !map || !intervalReady) return
     let popup: Popup | null = null
     let request: AbortController | null = null
-    map.getCanvas().style.cursor = mode === 'route' ? 'crosshair' : ''
+    map.getCanvas().style.cursor = mode === 'route-manual' ? 'crosshair' : ''
     const click = (e: MapMouseEvent) => {
       request?.abort(); popup?.remove()
-      if (mode === 'route') {
+      if (mode === 'route-manual') {
         setRoutes(null); setRouteStatus('')
         setPoints(previous => previous.length === 1 ? [...previous, { lng: e.lngLat.lng, lat: e.lngLat.lat }] : [{ lng: e.lngLat.lng, lat: e.lngLat.lat }])
         return
@@ -186,10 +187,23 @@ export default function MumbaiFloodMap() {
         </div>
         <Panel>
           <PanelLabel>Explore Mumbai</PanelLabel>
-          <div className="my-3 flex gap-2">{(['inspect', 'route'] as const).map(value => <button key={value} disabled={disabled} aria-pressed={mode === value} className={buttonClass} onClick={() => setMode(value)}>{value === 'inspect' ? 'Inspect' : 'Pick route'}</button>)}</div>
-          <PanelCaption>{mode === 'inspect' ? 'Click the map for the event’s FSI value.' : !start ? 'Pick your start point.' : !end ? 'Pick your destination.' : 'The API snaps your points to the road graph.'}</PanelCaption>
-          {points.map((point, index) => <PanelCaption className="mt-2" key={index}>{index === 0 ? 'A' : 'B'} · {point.lat.toFixed(4)}, {point.lng.toFixed(4)}</PanelCaption>)}
-          <div role="status">{routeStatus && <PanelCaption className="mt-3">{routeStatus}</PanelCaption>}</div>
+          <div className="my-3 flex gap-2">
+            <button disabled={disabled} aria-pressed={mode === 'inspect'} className={buttonClass} onClick={() => setMode('inspect')}>Inspect</button>
+            <button disabled={disabled} aria-pressed={mode === 'route-manual'} className={buttonClass} onClick={() => setMode('route-manual')}>Pick route</button>
+            <button disabled={disabled} aria-pressed={mode === 'route-address'} className={buttonClass} onClick={() => setMode('route-address')}>Address route</button>
+          </div>
+          <PanelCaption>{mode === 'inspect' ? 'Click the map for the event\'s FSI value.' : mode === 'route-manual' ? (!start ? 'Pick your start point.' : !end ? 'Pick your destination.' : 'The API snaps your points to the road graph.') : 'Enter addresses to find a route.'}</PanelCaption>
+          {mode === 'route-address' && (
+            <AddressRoutePanel 
+              onRouteFound={(s, e) => { setPoints([s, e]); setRoutes(null); setRouteStatus('') }}
+              onClear={() => { setPoints([]); setRoutes(null); setRouteStatus('') }}
+              disabled={disabled}
+              routeStatus={routeStatus}
+              hasRoute={!!routes}
+            />
+          )}
+          {mode !== 'route-address' && points.map((point, index) => <PanelCaption className="mt-2" key={index}>{index === 0 ? 'A' : 'B'} • {point.lat.toFixed(4)}, {point.lng.toFixed(4)}</PanelCaption>)}
+          {mode !== 'route-address' && <div role="status">{routeStatus && <PanelCaption className="mt-3">{routeStatus}</PanelCaption>}</div>}
           {routes && <div className="mt-3 space-y-2 text-sm" aria-live="polite">
             <p><span className="text-cyan-400">Flood-aware</span>: {(routes.flood_aware_route.length_m / 1000).toFixed(2)} km</p>
             <p><span className="text-slate-400">Shortest</span>: {(routes.normal_route.length_m / 1000).toFixed(2)} km</p>
@@ -197,7 +211,7 @@ export default function MumbaiFloodMap() {
             <PanelCaption>Flood-aware FSI: max {routes.flood_aware_route.max_risk.toFixed(3)}, average {routes.flood_aware_route.avg_risk.toFixed(3)}</PanelCaption>
             <PanelCaption>Shortest FSI: max {routes.normal_route.max_risk.toFixed(3)}, average {routes.normal_route.avg_risk.toFixed(3)}</PanelCaption>
           </div>}
-          {start && <button className="hud-button mt-3 px-3 py-2 text-xs" onClick={() => { setPoints([]); setRoutes(null); setRouteStatus('') }}>Clear route</button>}
+          {start && mode !== 'route-address' && <button className="hud-button mt-3 px-3 py-2 text-xs" onClick={() => { setPoints([]); setRoutes(null); setRouteStatus('') }}>Clear route</button>}
         </Panel>
       </div>
     </div>
