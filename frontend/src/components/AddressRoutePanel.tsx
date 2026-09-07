@@ -1,6 +1,7 @@
-import { useState } from 'react'
-import Panel, { PanelCaption, PanelLabel } from './ui/Panel'
-import { geocodeAddress } from '../lib/floodApi'
+import { useState, useEffect } from 'react'
+import { PanelCaption } from './ui/Panel'
+import { geocodeAddress, geocodeSuggest } from '../lib/floodApi'
+import type { GeocodeResult } from '../lib/floodApi'
 import type { RoutePoint } from '../types/flood'
 
 interface Props {
@@ -11,11 +12,40 @@ interface Props {
   hasRoute?: boolean
 }
 
+function useSuggestions(query: string, setSuggestions: (s: GeocodeResult[]) => void) {
+  useEffect(() => {
+    if (!query.trim() || query.match(/^\s*(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\s*$/)) {
+      setSuggestions([])
+      return
+    }
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => {
+      geocodeSuggest(query, controller.signal)
+        .then(res => {
+          if (!controller.signal.aborted) setSuggestions(res)
+        })
+        .catch(() => {
+          if (!controller.signal.aborted) setSuggestions([])
+        })
+    }, 500)
+    return () => { clearTimeout(timeoutId); controller.abort() }
+  }, [query, setSuggestions])
+}
+
 export default function AddressRoutePanel({ onRouteFound, onClear, disabled, routeStatus, hasRoute }: Props) {
   const [startQuery, setStartQuery] = useState('')
   const [endQuery, setEndQuery] = useState('')
+  const [startSuggestions, setStartSuggestions] = useState<GeocodeResult[]>([])
+  const [endSuggestions, setEndSuggestions] = useState<GeocodeResult[]>([])
+  
+  const [startFocused, setStartFocused] = useState(false)
+  const [endFocused, setEndFocused] = useState(false)
+  
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  useSuggestions(startQuery, setStartSuggestions)
+  useSuggestions(endQuery, setEndSuggestions)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -45,6 +75,9 @@ export default function AddressRoutePanel({ onRouteFound, onClear, disabled, rou
         setError(`Could not find location: "${endQuery}". Please enter a more specific Mumbai address.`)
         return
       }
+      
+      setStartQuery(startRes.displayName)
+      setEndQuery(endRes.displayName)
       
       onRouteFound(
         { lat: startRes.lat, lng: startRes.lng },
@@ -82,19 +115,47 @@ export default function AddressRoutePanel({ onRouteFound, onClear, disabled, rou
     setError('')
     onClear()
   }
+  
+  const renderSuggestions = (
+    suggestions: GeocodeResult[], 
+    focused: boolean, 
+    onSelect: (s: GeocodeResult) => void
+  ) => {
+    if (!focused || suggestions.length === 0) return null
+    return (
+      <div className="absolute z-50 mt-1 w-full rounded border border-[var(--border-secondary)] bg-[var(--bg-panel)] shadow-lg overflow-hidden max-h-48 overflow-y-auto">
+        {suggestions.map((s, i) => (
+          <button
+            key={i}
+            type="button"
+            className="w-full text-left px-3 py-2 text-xs text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] border-b border-[var(--border-secondary)] last:border-b-0 truncate"
+            onMouseDown={() => onSelect(s)} // Use onMouseDown to fire before input onBlur
+          >
+            {s.displayName}
+          </button>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div className="mt-3">
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-        <div>
+        <div className="relative">
           <input
             type="text"
             className="w-full rounded border border-[var(--border-secondary)] bg-[var(--bg-secondary)] p-2 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)]"
             placeholder="Start location / address"
             value={startQuery}
             onChange={(e) => setStartQuery(e.target.value)}
+            onFocus={() => setStartFocused(true)}
+            onBlur={() => setStartFocused(false)}
             disabled={disabled || loading}
           />
+          {renderSuggestions(startSuggestions, startFocused, (s) => {
+            setStartQuery(s.displayName)
+            setStartFocused(false)
+          })}
           <button
             type="button"
             className="mt-1 text-xs text-[var(--cyan-primary)] hover:underline disabled:opacity-50"
@@ -105,14 +166,22 @@ export default function AddressRoutePanel({ onRouteFound, onClear, disabled, rou
           </button>
         </div>
         
-        <input
-          type="text"
-          className="w-full rounded border border-[var(--border-secondary)] bg-[var(--bg-secondary)] p-2 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)]"
-          placeholder="Destination / address"
-          value={endQuery}
-          onChange={(e) => setEndQuery(e.target.value)}
-          disabled={disabled || loading}
-        />
+        <div className="relative">
+          <input
+            type="text"
+            className="w-full rounded border border-[var(--border-secondary)] bg-[var(--bg-secondary)] p-2 text-sm text-[var(--text-primary)] placeholder-[var(--text-secondary)]"
+            placeholder="Destination / address"
+            value={endQuery}
+            onChange={(e) => setEndQuery(e.target.value)}
+            onFocus={() => setEndFocused(true)}
+            onBlur={() => setEndFocused(false)}
+            disabled={disabled || loading}
+          />
+          {renderSuggestions(endSuggestions, endFocused, (s) => {
+            setEndQuery(s.displayName)
+            setEndFocused(false)
+          })}
+        </div>
         
         <button
           type="submit"

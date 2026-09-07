@@ -57,3 +57,15 @@ export async function geocodeAddress(address: string, signal: AbortSignal): Prom
   if (!data || data.length === 0) return null
   return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), displayName: data[0].display_name }
 }
+
+
+export async function geocodeSuggest(queryText: string, signal: AbortSignal): Promise<GeocodeResult[]> {
+  if (!queryText.trim()) return []
+  const query = encodeURIComponent(queryText + (queryText.toLowerCase().includes('mumbai') ? '' : ', Mumbai'))
+  const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=5`
+  const response = await fetch(url, { signal, headers: { 'Accept-Language': 'en-US,en;q=0.9' } })
+  if (!response.ok) return []
+  const data = await response.json()
+  if (!data || !Array.isArray(data)) return []
+  return data.map((d: any) => ({ lat: parseFloat(d.lat), lng: parseFloat(d.lon), displayName: d.display_name }))
+}

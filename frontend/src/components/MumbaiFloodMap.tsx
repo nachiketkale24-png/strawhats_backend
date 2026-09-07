@@ -110,10 +110,10 @@ export default function MumbaiFloodMap() {
     if (!ready || !map || !intervalReady) return
     let popup: Popup | null = null
     let request: AbortController | null = null
-    map.getCanvas().style.cursor = mode === 'route-manual' ? 'crosshair' : ''
+    map.getCanvas().style.cursor = mode === 'route' ? 'crosshair' : ''
     const click = (e: MapMouseEvent) => {
       request?.abort(); popup?.remove()
-      if (mode === 'route-manual') {
+      if (mode === 'route') {
         setRoutes(null); setRouteStatus('')
         setPoints(previous => previous.length === 1 ? [...previous, { lng: e.lngLat.lng, lat: e.lngLat.lat }] : [{ lng: e.lngLat.lng, lat: e.lngLat.lat }])
         return
@@ -189,10 +189,10 @@ export default function MumbaiFloodMap() {
           <PanelLabel>Explore Mumbai</PanelLabel>
           <div className="my-3 flex gap-2">
             <button disabled={disabled} aria-pressed={mode === 'inspect'} className={buttonClass} onClick={() => setMode('inspect')}>Inspect</button>
-            <button disabled={disabled} aria-pressed={mode === 'route-manual'} className={buttonClass} onClick={() => setMode('route-manual')}>Pick route</button>
+            <button disabled={disabled} aria-pressed={mode === 'route'} className={buttonClass} onClick={() => setMode('route')}>Pick route</button>
             <button disabled={disabled} aria-pressed={mode === 'route-address'} className={buttonClass} onClick={() => setMode('route-address')}>Address route</button>
           </div>
-          <PanelCaption>{mode === 'inspect' ? 'Click the map for the event\'s FSI value.' : mode === 'route-manual' ? (!start ? 'Pick your start point.' : !end ? 'Pick your destination.' : 'The API snaps your points to the road graph.') : 'Enter addresses to find a route.'}</PanelCaption>
+          <PanelCaption>{mode === 'inspect' ? 'Click the map for the event\'s FSI value.' : mode === 'route' ? (!start ? 'Pick your start point.' : !end ? 'Pick your destination.' : 'The API snaps your points to the road graph.') : 'Enter addresses to find a route.'}</PanelCaption>
           {mode === 'route-address' && (
             <AddressRoutePanel 
               onRouteFound={(s, e) => { setPoints([s, e]); setRoutes(null); setRouteStatus('') }}
