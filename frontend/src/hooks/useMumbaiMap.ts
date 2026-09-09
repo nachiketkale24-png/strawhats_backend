@@ -30,7 +30,7 @@ export function useMumbaiMap(
       return
     }
     mapRef.current = map
-    const onError = () => setError('Some map resources could not load. Check your connection and reload.')
+    const onError = (e: maplibregl.ErrorEvent) => console.warn('MapLibre resource warning:', e)
     const onLoad = () => {
       clearTimeout(loadTimeout)
       map.setProjection({ type: 'mercator' })
